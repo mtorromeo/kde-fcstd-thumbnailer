@@ -1,7 +1,8 @@
 /*
- *  Copyright (C) 2012
- *  by Yorik van Havre <yorik@uncreated.net>
- *  based on the Kde ODF thumbnailer by Ariel Constenla-Haile
+ * Copyright (C)
+ * 	 2015 Stefan Hamminga <stefan@prjct.net>
+ *   2012 Yorik van Havre <yorik@uncreated.net>
+ *   2010 Ariel Constenla-Haile <ariel.constenla.haile@gmail.com>
  *
  * This file is part of Fcstd Thumbnail Creator.
  *
@@ -29,49 +30,39 @@
 
 extern "C"
 {
-    KDE_EXPORT ThumbCreator *new_creator()
-    {
-        return new FcstdCreator;
+    Q_DECL_EXPORT ThumbCreator *new_creator() {
+        return new FcstdCreator();
     }
 }
 
+FcstdCreator::FcstdCreator() { }
 
-FcstdCreator::FcstdCreator()
-{
+FcstdCreator::~FcstdCreator() { }
 
-}
-
-FcstdCreator::~FcstdCreator()
-{
-
-}
-
-bool FcstdCreator::create ( const QString &path, int w, int h, QImage &img )
-{
-    Q_UNUSED(w)
-    Q_UNUSED(h)
+bool FcstdCreator::create(const QString &path, int w, int h, QImage &img) {
+    Q_UNUSED(w);
+    Q_UNUSED(h);
 
     bool bRet = false;
-    KZip zip ( path );
-    if ( zip.open ( QIODevice::ReadOnly ) )
-    {
+    KZip zip(path);
+    if (zip.open(QIODevice::ReadOnly)) {
         const KArchiveDirectory* dir = zip.directory();
-        const KArchiveEntry* entry = dir->entry ( "thumbnails/Thumbnail.png" );
+        const KArchiveEntry* entry = dir->entry ("thumbnails/Thumbnail.png");
 
-        if ( ( entry != NULL ) && ( entry->isFile() ) )
-        {
-            const KArchiveFile* file = ( KArchiveFile* ) entry;
-            QByteArray data ( file->data() );
+        if ( (entry != NULL) && (entry->isFile())) {
+            const KArchiveFile* file = (KArchiveFile*)entry;
+            QByteArray data(file->data());
 
-            if ( data.size() > 0 )
-            {
-                img.loadFromData ( data,"PNG" );
-#ifndef KEEP_ALPHA_CHANNEL
-                if ( !img.isNull() && img.hasAlphaChannel() )
-                    img = img.convertToFormat ( QImage::Format_RGB32 );
-#endif
-                if ( !img.isNull() )
+            if (data.size() > 0) {
+                img.loadFromData(data, "PNG");
+                if (!img.isNull()) {
+                    //TODO: Check if this is really needed
+                    // if (img.hasAlphaChannel()) {
+                    //     QImage i = img.convertToFormat(QImage::Format_RGB32);
+                    //     img.swap(i);
+                    // }
                     bRet = true;
+                }
             }
         }
     }
@@ -79,10 +70,8 @@ bool FcstdCreator::create ( const QString &path, int w, int h, QImage &img )
     return bRet;
 }
 
-ThumbCreator::Flags FcstdCreator::flags() const
-{
-    return (Flags)(DrawFrame | BlendIcon);
+ThumbCreator::Flags FcstdCreator::flags() const {
+    // FreeCAD already overlays a logo (TODO: file bug report about that)
+    // return (Flags)(DrawFrame | BlendIcon);
+    return None;
 }
-
-
-// kate: indent-mode cstyle; space-indent on; indent-width 4;

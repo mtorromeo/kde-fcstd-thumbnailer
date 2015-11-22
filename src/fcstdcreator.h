@@ -1,8 +1,10 @@
 /*
- *  Copyright (C) 2010
- *  by Ariel Constenla-Haile <ariel.constenla.haile@gmail.com>
+* Copyright (C)
+* 	 2015 Stefan Hamminga <stefan@prjct.net>
+*   2012 Yorik van Havre <yorik@uncreated.net>
+*   2010 Ariel Constenla-Haile <ariel.constenla.haile@gmail.com>
  *
- * This file is part of OpenDocument Thumbnail Creator.
+ * This file is part of Fcstd Thumbnail Creator.
  *
  * This is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License version 3
@@ -31,7 +33,7 @@ class FcstdCreator : public QObject, public ThumbCreator
 public:
     FcstdCreator();
     virtual ~FcstdCreator();
-    virtual bool create(const QString &path, int w, int h, QImage &img);
+    virtual bool create(const QString &path, int w, int h, QImage &thumb);
     virtual Flags flags() const;
 };
 

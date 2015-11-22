@@ -6,3 +6,4 @@ MimeType=application/x-extension-fcstd;
 X-KDE-Library=fcstdthumbnailer
 CacheThumbnail=true
 IgnoreMaximumSize=true
+ThumbnailerVersion=2
